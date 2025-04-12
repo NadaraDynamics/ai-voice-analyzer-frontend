@@ -1,35 +1,87 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [calls, setCalls] = useState([]);
+
+  // Fetch calls from backend
+  useEffect(() => {
+    fetch('http://44.203.153.182:8000/calls')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Fetched call data:", data);
+        setCalls(data);
+      })
+      .catch((err) => console.error("Error fetching calls:", err));
+  }, []);
+
+  // Handle delete
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this entry?")) return;
+
+    try {
+      const res = await fetch(`http://44.203.153.182:8000/calls/${id}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        setCalls((prev) => prev.filter((call) => call._id !== id));
+      } else {
+        const err = await res.json();
+        alert(`Failed to delete: ${err.detail}`);
+      }
+    } catch (err) {
+      alert("Error deleting call");
+      console.error(err);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App" style={{ padding: '2rem' }}>
+      <h1>📞 AI Voice Analyzer Dashboard</h1>
+
+      {calls.length === 0 ? (
+        <p>Loading call data...</p>
+      ) : (
+        <table border="1" cellPadding="10" style={{ marginTop: '2rem', width: '100%' }}>
+          <thead>
+            <tr>
+              <th>Agent</th>
+              <th>Transcript</th>
+              <th>Tone</th>
+              <th>Timestamp</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {calls.map((call) => (
+              <tr key={call._id}>
+                <td>{call.agent}</td>
+                <td>{call.transcript}</td>
+                <td style={{ color: call.tone_signal }}>{call.tone_signal.toUpperCase()}</td>
+                <td>{call.timestamp}</td>
+                <td>
+                  <button
+                    onClick={() => handleDelete(call._id)}
+                    style={{
+                      backgroundColor: '#ff4d4f',
+                      color: 'white',
+                      border: 'none',
+                      padding: '6px 12px',
+                      cursor: 'pointer',
+                      borderRadius: '5px'
+                    }}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
