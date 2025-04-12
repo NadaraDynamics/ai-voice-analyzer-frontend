@@ -55,10 +55,22 @@ function App() {
           </thead>
           <tbody>
             {calls.map((call) => (
-              <tr key={call._id}>
+              <tr
+                key={call._id}
+                style={{
+                  backgroundColor:
+                    call.tone_signal === 'green' ? '#e6ffed' :
+                    call.tone_signal === 'yellow' ? '#fffbe6' :
+                    call.tone_signal === 'red' ? '#ffe6e6' :
+                    'white',
+                    color: '#333'
+                }}
+              >
                 <td>{call.agent}</td>
                 <td>{call.transcript}</td>
-                <td style={{ color: call.tone_signal }}>{call.tone_signal.toUpperCase()}</td>
+                <td style={{ color: call.tone_signal }}>
+                  {call.tone_signal.toUpperCase()}
+                </td>
                 <td>{call.timestamp}</td>
                 <td>
                   <button
