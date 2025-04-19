@@ -257,9 +257,7 @@ function App() {
                 <td>
                   <button onClick={() => handleDelete(call._id)} style={{ backgroundColor: '#ff4d4f', color: 'white', border: 'none', padding: '6px 12px', cursor: 'pointer', borderRadius: '5px' }}>Delete</button>
                   <button onClick={exportCSV} style={{ marginLeft: '0.5rem', backgroundColor: '#4CAF50', color: 'white', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Export CSV</button>
-                  <button onClick={exportPDF} style={{backgroundColor: '#1976D2', color: 'white', padding: '6px 12px', border: 'none', borderRadius: '4px',cursor: 'pointer'}}>Export PDF</button>
-
-
+                  <button onClick={exportPDF} style={{ marginLeft: '0.5rem',backgroundColor: '#1976D2', color: 'white', padding: '6px 12px', border: 'none', borderRadius: '4px',cursor: 'pointer'}}>Export PDF</button>
                   <div style={{ marginTop: '0.5rem' }}>
                     <textarea
                       rows="2"
