@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     const fetchCalls = () => {
-      fetch('http://44.203.153.182:8000/calls')
+      fetch('http://3.89.98.188:8000/calls')
         .then((res) => res.json())
         .then((data) => {
           setCalls(data);
@@ -33,7 +33,7 @@ function App() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this entry?")) return;
     try {
-      const res = await fetch(`http://44.203.153.182:8000/calls/${id}`, { method: "DELETE" });
+      const res = await fetch(`http://3.89.98.188:8000/calls/${id}`, { method: "DELETE" });
       if (res.ok) {
         setCalls(prev => prev.filter(call => call._id !== id));
       } else {
@@ -75,7 +75,7 @@ function App() {
     const feedback = feedbackMap[id];
     if (!feedback || feedback.trim() === "") return;
     try {
-      const res = await fetch(`http://44.203.153.182:8000/calls/${id}/feedback`, {
+      const res = await fetch(`http://3.89.98.188:8000/calls/${id}/feedback`, {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ feedback })
